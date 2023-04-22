@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch and Timer</title>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+    <div style="display: flex;">
+    <div class="stopwatch">
+        <h2 style="color: orangered;
+        position: relative;
+        top: -3pc;
+        background: white;">Stopwatch</h2>
+        <h1 id="displayTime">00:00:00:00</h1>
+        <div class="buttons">
+            <img src="images/stop.png" onclick="stopWatch()"/>
+            <img src="images/start.png" onclick="watchStart()"/>
+            <img src="images/reset.png" onclick="resetWatch()"/>
+        </div>
+    </div>
+
+
+    <div class="stopwatch">
+        <h2 style="color: orangered;
+        position: relative;
+        top: -3pc;
+        background: white;">Timer</h2>
+        <div style="margin-top: -34px;">
+        <div style="display: flex;column-gap: 32px;
+        margin-left: 162px;">
+        <p>Hours</p>
+        <p>Minutes</p>
+        <p>Seconds</p>
+        </div>
+
+        <div style="display: flex;
+        margin-left: 10pc;
+        column-gap: 1pc;
+        text-align: center;">
+        
+        <input id="hour" type="number" max="90" min="0" value="0"/>
+        <input id="minute" type="number" max="60" min="0" value="0"/>
+        <input id="sec" type="number" max="60" min="0" value="0"/>
+        </div>
+        </div>
+        <div class="buttons" style="margin-top: 25px;">
+            
+            <img src="images/start.png" id="start" />
+            <img style="width:52px;" src="images/reset.png" id="reset" />
+        </div>
+    </div>
+    </div>
+
+</body>
+
+
+    
+
+</html>
+
+<script>
+    let [seconds, minutes, hours,micro] = [0,0,0,0];
+    let displayTime = document.getElementById('displayTime');
+    let timer = null;
+    let hr = document.getElementById('hr');
+    let mi = document.getElementById('mi');
+    let sec = document.getElementById('sec');
+
+    function stopwatch()
+    {
+        micro++
+        if(micro==60)
+        {
+            seconds++;
+            micro=0;
+        if(seconds==60)
+        {
+            seconds=0;
+            minutes++;
+            if(minutes==60)
+            {
+                minutes=0;
+                hours++;
+            }
+        }
+    }
+
+        let h = hours<10?"0"+hours:hours;
+        let m = minutes<10?"0"+minutes:minutes;
+        let s = seconds<10?"0"+seconds:seconds;
+        let ms = micro<10?"0"+micro:micro;
+        displayTime.innerHTML = h+":"+m+":"+s+":"+ms;
+    }
+
+    function watchStart()
+    {
+        if(timer!==null)
+        {
+            clearInterval(timer);
+        }
+        timer = setInterval(stopwatch,10);
+    }
+
+    function stopWatch()
+    {
+        clearInterval(timer);
+    }
+
+    function resetWatch()
+    {
+        clearInterval(timer);
+        [seconds, minutes, hours] = [0,0,0,0];
+        displayTime.innerHTML = "00:00:00:00";
+    }
+
+
+
+
+
+
+
+    
+var start = document.getElementById('start');
+var reset = document.getElementById('reset');
+
+var h = document.getElementById("hour");
+var m = document.getElementById("minute");
+var s = document.getElementById("sec");
+
+//store a reference to the startTimer variable
+var startTimer = null;
+
+start.addEventListener('click', function(){
+    //initialize the variable
+    function startInterval(){
+        startTimer = setInterval(function() {
+            sstimer();
+        }, 1000);
+    }
+    startInterval();
+})
+
+reset.addEventListener('click', function(){
+    h.value = 0;
+    m.value = 0;
+    s.value = 0;
+    //stop the timer after pressing "reset"
+    stopInterval()
+})
+
+function sstimer(){
+    if(h.value == 0 && m.value == 0 && s.value == 0){
+        h.value = 0;
+        m.value = 0;
+        s.value = 0;
+    } else if(s.value != 0){
+        s.value--;
+    } else if(m.value != 0 && s.value == 0){
+        s.value = 59;
+        m.value--;
+    } else if(h.value != 0 && m.value == 0){
+        m.value = 60;
+        h.value--;
+    }
+    return;
+}
+
+//stop the function after pressing the reset button, 
+//so the time wont go down when selecting a new time after pressing reset
+function stopInterval() {
+    clearInterval(startTimer);
+
+}
+
+    
+</script>
